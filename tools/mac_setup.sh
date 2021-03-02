@@ -42,3 +42,6 @@ eval "$(pyenv init -)"
 
 pip install pipenv==2020.8.13
 pipenv install --system --deploy
+pip install sympy
+pip install cython
+pip install cffi
