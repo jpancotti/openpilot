@@ -13,7 +13,7 @@ from selfdrive.controls.lib.vehicle_model import VehicleModel
 
 GearShifter = car.CarState.GearShifter
 EventName = car.CarEvent.EventName
-MAX_CTRL_SPEED = (V_CRUISE_MAX + 4) * CV.KPH_TO_MS  # 135 + 4 = 86 mph
+MAX_CTRL_SPEED = (V_CRUISE_MAX) * CV.KPH_TO_MS  # 145 = 90 mph
 
 # generic car and radar interfaces
 
