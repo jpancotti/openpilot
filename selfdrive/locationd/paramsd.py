@@ -39,7 +39,7 @@ class ParamsLearner:
       yaw_rate_valid = msg.angularVelocityCalibrated.valid
 
       if self.active:
-        if msg.inputsOK and msg.posenetOK and yaw_rate_valid:
+        if msg.inputsOK and msg.posenetOK:
           self.kf.predict_and_observe(t,
                                       ObservationKind.ROAD_FRAME_YAW_RATE,
                                       np.array([[[-yaw_rate]]]),
