@@ -44,7 +44,7 @@ QWidget * toggles_panel() {
                                             "Display speed in km/h instead of mp/h.",
                                             "../assets/offroad/icon_metric.png"
                                             ));
-  /**/                                          
+  //*/                                          
   toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(new ParamControl("CommunityFeaturesToggle",
                                             "Enable Community Features",
