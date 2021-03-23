@@ -32,18 +32,19 @@ QWidget * toggles_panel() {
                                             "Receive alerts to steer back into the lane when your vehicle drifts over a detected lane line without a turn signal activated while driving over 31mph (50kph).",
                                             "../assets/offroad/icon_warning.png"
                                               ));
-#  toggles_list->addWidget(horizontal_line());
-#  toggles_list->addWidget(new ParamControl("IsRHD",
-#                                            "Enable Right-Hand Drive",
-#                                            "Allow openpilot to obey left-hand traffic conventions and perform driver monitoring on right driver seat.",
-#                                            "../assets/offroad/icon_openpilot_mirrored.png"
-#                                            ));
-#  toggles_list->addWidget(horizontal_line());
-#  toggles_list->addWidget(new ParamControl("IsMetric",
-#                                            "Use Metric System",
-#                                            "Display speed in km/h instead of mp/h.",
-#                                            "../assets/offroad/icon_metric.png"
-#                                            ));
+  /* toggles_list->addWidget(horizontal_line());
+  toggles_list->addWidget(new ParamControl("IsRHD",
+                                            "Enable Right-Hand Drive",
+                                            "Allow openpilot to obey left-hand traffic conventions and perform driver monitoring on right driver seat.",
+                                            "../assets/offroad/icon_openpilot_mirrored.png"
+                                            ));
+  toggles_list->addWidget(horizontal_line());
+  toggles_list->addWidget(new ParamControl("IsMetric",
+                                            "Use Metric System",
+                                            "Display speed in km/h instead of mp/h.",
+                                            "../assets/offroad/icon_metric.png"
+                                            ));
+  /**/                                          
   toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(new ParamControl("CommunityFeaturesToggle",
                                             "Enable Community Features",
