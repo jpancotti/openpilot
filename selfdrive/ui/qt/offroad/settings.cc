@@ -73,8 +73,12 @@ QWidget * toggles_panel() {
                                             "Record and Upload Driver Camera",
                                             "Upload data from the driver facing camera and help improve the driver monitoring algorithm.",
                                             "../assets/offroad/icon_network.png");
-  toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(record_toggle);
+  toggles_list->addWidget(horizontal_line());
+  toggles_list->addWidget(new ParamControl("EndToEndToggle",
+                                            "Disable lanelines 🥬",
+                                            "In this mode openpilot will ignore lanelines and just drive how it thinks a human would. Experimental.",
+                                            "../assets/offroad/icon_road.png"));
 
   bool record_lock = Params().read_db_bool("RecordFrontLock");
   record_toggle->setEnabled(!record_lock);
