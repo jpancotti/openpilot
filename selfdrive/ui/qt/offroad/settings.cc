@@ -51,6 +51,12 @@ QWidget * toggles_panel() {
                                             "Use features from the open source community that are not maintained or supported by comma.ai and have not been confirmed to meet the standard safety model. These features include community supported cars and community supported hardware. Be extra cautious when using these features",
                                             "../assets/offroad/icon_shell.png"
                                             ));
+    toggles_list->addWidget(horizontal_line());
+  toggles_list->addWidget(new ParamControl("GasPressToggle",
+                                            "Disengage on Gas Press",
+                                            "Enable this toggle to disengage OpenPilot by pressing the gas pedal.",
+                                            "../assets/offroad/icon_road.png"
+                                            ));  
   toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(new ParamControl("VisionRadarToggle",
                                            "Enable Vision Radar",
