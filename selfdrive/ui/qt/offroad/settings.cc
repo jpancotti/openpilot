@@ -27,18 +27,12 @@ QWidget * toggles_panel() {
                                             "../assets/offroad/icon_openpilot.png"
                                               ));
   toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("LaneChangeEnabled",
-                                            "Enable Lane Change Assist",
-                                            "Perform assisted lane changes with openpilot by checking your surroundings for safety, activating the turn signal and gently nudging the steering wheel towards your desired lane. openpilot is not capable of checking if a lane change is safe. You must continuously observe your surroundings to use this feature.",
-                                            "../assets/offroad/icon_road.png"
-                                              ));
-  toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(new ParamControl("IsLdwEnabled",
                                             "Enable Lane Departure Warnings",
                                             "Receive alerts to steer back into the lane when your vehicle drifts over a detected lane line without a turn signal activated while driving over 31mph (50kph).",
                                             "../assets/offroad/icon_warning.png"
                                               ));
-  toggles_list->addWidget(horizontal_line());
+  /* toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(new ParamControl("IsRHD",
                                             "Enable Right-Hand Drive",
                                             "Allow openpilot to obey left-hand traffic conventions and perform driver monitoring on right driver seat.",
@@ -50,6 +44,7 @@ QWidget * toggles_panel() {
                                             "Display speed in km/h instead of mp/h.",
                                             "../assets/offroad/icon_metric.png"
                                             ));
+  //*/                                          
   toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(new ParamControl("CommunityFeaturesToggle",
                                             "Enable Community Features",
@@ -57,30 +52,34 @@ QWidget * toggles_panel() {
                                             "../assets/offroad/icon_shell.png"
                                             ));
   toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamsToggle("VisionRadarToggle",
+  toggles_list->addWidget(new ParamControl("VisionRadarToggle",
                                            "Enable Vision Radar",
                                            "Disable the factory radar and enable openpilot longitudinal control",
                                            "../assets/offroad/icon_road.png"
                                             ));
   toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamsToggle("IsUploadRawEnabled",
+  toggles_list->addWidget(new ParamControl("IsUploadRawEnabled",
                                            "Enable Uploads Besides Qlog",
                                            "Enables uploading rlogs and rear camera files (and front camera if enabled)",
                                            "../assets/offroad/icon_network.png"
                                             ));
   toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamsToggle("DisableUpdates",
+  toggles_list->addWidget(new ParamControl("DisableUpdates",
                                            "Disable Auto Updates",
                                            "Disables automatic updates",
                                            "../assets/offroad/icon_network.png"
                                             ));
-
+  toggles_list->addWidget(horizontal_line());
   ParamControl *record_toggle = new ParamControl("RecordFront",
                                             "Record and Upload Driver Camera",
                                             "Upload data from the driver facing camera and help improve the driver monitoring algorithm.",
                                             "../assets/offroad/icon_network.png");
-  toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(record_toggle);
+  toggles_list->addWidget(horizontal_line());
+  toggles_list->addWidget(new ParamControl("EndToEndToggle",
+                                            "KL Laneless Model (Experimental)",
+                                            "In this mode openpilot will ignore lanelines and just drive how it thinks a human would. Experimental.",
+                                            "../assets/offroad/icon_road.png"));
 
   bool record_lock = Params().read_db_bool("RecordFrontLock");
   record_toggle->setEnabled(!record_lock);
@@ -90,7 +89,7 @@ QWidget * toggles_panel() {
   return widget;
 }
 
-QWidget * device_panel() {
+DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QVBoxLayout *device_layout = new QVBoxLayout;
   device_layout->setMargin(100);
 
@@ -134,35 +133,36 @@ QWidget * device_panel() {
   device_layout->addWidget(new ButtonControl("Uninstall " + brand, "UNINSTALL",
                                              "",
                                              [=]() {
-                                               if (ConfirmationDialog::confirm("Are you srue you want to uninstall?")) {
+                                               if (ConfirmationDialog::confirm("Are you sure you want to uninstall?")) {
                                                  Params().write_db_value("DoUninstall", "1");
                                                }
                                              }));
 
   // power buttons
-
-  QPushButton *poweroff_btn = new QPushButton("Power Off");
-  poweroff_btn->setStyleSheet("background-color: #E22C2C;");
-  device_layout->addWidget(poweroff_btn, Qt::AlignBottom);
-  QObject::connect(poweroff_btn, &QPushButton::released, [=]() {
-    if (ConfirmationDialog::confirm("Are you sure you want to power off?")) {
-      Hardware::poweroff();
-    }
-  });
-
-  device_layout->addSpacing(20);
+  QHBoxLayout *power_layout = new QHBoxLayout();
+  power_layout->setSpacing(30);
 
   QPushButton *reboot_btn = new QPushButton("Reboot");
-  device_layout->addWidget(reboot_btn, Qt::AlignBottom);
+  power_layout->addWidget(reboot_btn);
   QObject::connect(reboot_btn, &QPushButton::released, [=]() {
     if (ConfirmationDialog::confirm("Are you sure you want to reboot?")) {
       Hardware::reboot();
     }
   });
 
-  QWidget *widget = new QWidget;
-  widget->setLayout(device_layout);
-  widget->setStyleSheet(R"(
+  QPushButton *poweroff_btn = new QPushButton("Power Off");
+  poweroff_btn->setStyleSheet("background-color: #E22C2C;");
+  power_layout->addWidget(poweroff_btn);
+  QObject::connect(poweroff_btn, &QPushButton::released, [=]() {
+    if (ConfirmationDialog::confirm("Are you sure you want to power off?")) {
+      Hardware::poweroff();
+    }
+  });
+
+  device_layout->addLayout(power_layout);
+
+  setLayout(device_layout);
+  setStyleSheet(R"(
     QPushButton {
       padding: 0;
       height: 120px;
@@ -170,7 +170,6 @@ QWidget * device_panel() {
       background-color: #393939;
     }
   )");
-  return widget;
 }
 
 DeveloperPanel::DeveloperPanel(QWidget* parent) : QFrame(parent) {
@@ -193,10 +192,11 @@ void DeveloperPanel::showEvent(QShowEvent *event) {
 
   for (int i = 0; i < dev_params.size(); i++) {
     const auto &[name, value] = dev_params[i];
+    QString val = QString::fromStdString(value).trimmed();
     if (labels.size() > i) {
-      labels[i]->setText(QString::fromStdString(value));
+      labels[i]->setText(val);
     } else {
-      labels.push_back(new LabelControl(name, QString::fromStdString(value)));
+      labels.push_back(new LabelControl(name, val));
       layout()->addWidget(labels[i]);
       if (i < (dev_params.size() - 1)) {
         layout()->addWidget(horizontal_line());
@@ -266,7 +266,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
 
   // setup panels
   QPair<QString, QWidget *> panels[] = {
-    {"Device", device_panel()},
+    {"Device", new DevicePanel(this)},
     {"Network", network_panel(this)},
     {"Toggles", toggles_panel()},
     {"Developer", new DeveloperPanel()},
@@ -296,7 +296,9 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     sidebar_layout->addWidget(btn, 0, Qt::AlignRight);
 
     panel_layout->addWidget(panel);
-    QObject::connect(btn, &QPushButton::released, [=, w = panel]() { panel_layout->setCurrentWidget(w); });
+    QObject::connect(btn, &QPushButton::released, [=, w = panel]() {
+      panel_layout->setCurrentWidget(w);
+    });
   }
   qobject_cast<QPushButton *>(nav_btns->buttons()[0])->setChecked(true);
   sidebar_layout->setContentsMargins(50, 50, 100, 50);
