@@ -284,7 +284,7 @@ void GLWindow::timerUpdate() {
   handle_display_state(&ui_state, false);
 
   // scale volume with speed
-  sound.volume = util::map_val(ui_state.scene.car_state.getVEgo(), 0.f, 20.f,
+  sound.volume = util::map_val(ui_state.scene.car_state.getVEgo(), 0.f, 40.f,
                                Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
 
   ui_update(&ui_state);
