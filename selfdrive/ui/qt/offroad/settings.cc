@@ -57,19 +57,19 @@ QWidget * toggles_panel() {
                                             "../assets/offroad/icon_shell.png"
                                             ));
   toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamsToggle("VisionRadarToggle",
+  toggles_list->addWidget(new ParamControl("VisionRadarToggle",
                                            "Enable Vision Radar",
                                            "Disable the factory radar and enable openpilot longitudinal control",
                                            "../assets/offroad/icon_road.png"
                                             ));
   toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamsToggle("IsUploadRawEnabled",
+  toggles_list->addWidget(new ParamControl("IsUploadRawEnabled",
                                            "Enable Uploads Besides Qlog",
                                            "Enables uploading rlogs and rear camera files (and front camera if enabled)",
                                            "../assets/offroad/icon_network.png"
                                             ));
   toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamsToggle("DisableUpdates",
+  toggles_list->addWidget(new ParamControl("DisableUpdates",
                                            "Disable Auto Updates",
                                            "Disables automatic updates",
                                            "../assets/offroad/icon_network.png"
