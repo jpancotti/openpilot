@@ -23,7 +23,8 @@ class CarInterfaceBase():
     params = Params()
     self.CP = CP
     self.VM = VehicleModel(CP)
-    self.disengage_on_gas = params.get("GasPressToggle", encoding='utf8') == b'1'
+    self.disengage_on_gas = True
+    #self.disengage_on_gas = params.get("GasPressToggle", encoding='utf8') == b'1'
     self.frame = 0
     self.low_speed_alert = False
 
