@@ -15,15 +15,18 @@ from common.params import Params
 GearShifter = car.CarState.GearShifter
 EventName = car.CarEvent.EventName
 MAX_CTRL_SPEED = (V_CRUISE_MAX) * CV.KPH_TO_MS  # 145 = 90 mph
+params = Params()
+self.disengage_on_gas = params.get("GasPressToggle", encoding='utf8') == "1"
 
 # generic car and radar interfaces
 
 
 class CarInterfaceBase():
   def __init__(self, CP, CarController, CarState):
+    params = Params()
     self.CP = CP
     self.VM = VehicleModel(CP)
-    self.disengage_on_gas = Params().get('GasPressToggle') != b'1'
+    self.disengage_on_gas = params.get("GasPressToggle", encoding='utf8') == "1"
     self.frame = 0
     self.low_speed_alert = False
 
