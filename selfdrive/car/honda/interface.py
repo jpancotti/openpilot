@@ -18,7 +18,7 @@ TransmissionType = car.CarParams.TransmissionType
 
 
 def compute_gb_honda_bosch(accel, speed):
-  return float(accel) / 3.5
+  return float(accel) / 4.8
 
 
 def compute_gb_honda_nidec(accel, speed):
@@ -267,9 +267,9 @@ class CarInterface(CarInterfaceBase):
         ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.64], [0.192]]
       tire_stiffness_factor = 0.677
       ret.longitudinalTuning.kpBP = [0., 5., 35.]
-      ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
+      ret.longitudinalTuning.kpV = [1.1, 0.7, 0.4]
       ret.longitudinalTuning.kiBP = [0., 35.]
-      ret.longitudinalTuning.kiV = [0.18, 0.12]
+      ret.longitudinalTuning.kiV = [0.10, 0.08]
 
     elif candidate == CAR.CRV_HYBRID:
       stop_and_go = True
@@ -436,10 +436,10 @@ class CarInterface(CarInterfaceBase):
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
     if candidate in HONDA_BOSCH:
-      ret.gasMaxBP = [0.]  # m/s
-      ret.gasMaxV = [0.6]
+      ret.gasMaxBP = [0.0, 5., 10., 22., 35.] # m/s #0, 11, 22, 49, 78 mph
+      ret.gasMaxV = [0.35, 0.25, 0.20, 0.17, 0.15] #lessen gasMax as speed increases
       ret.brakeMaxBP = [0.]  # m/s
-      ret.brakeMaxV = [1.]   # max brake allowed, 3.5m/s^2
+      ret.brakeMaxV = [1.]   # max brake allowed
     else:
       ret.gasMaxBP = [0.]  # m/s
       ret.gasMaxV = [0.6] if ret.enableGasInterceptor else [0.]  # max gas allowed

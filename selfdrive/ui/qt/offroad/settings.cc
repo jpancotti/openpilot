@@ -73,6 +73,13 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                    "../assets/offroad/icon_road.png",
                                    this));
 
+ toggles.append(new ParamControl("DisableRadar",
+                                  "Use Vision ACC",
+                                  "In this mode openpilot will ignore built in radar and just use vision for longitudinal control.",
+                                  "../assets/offroad/icon_road.png",
+                                  this));
+
+
   if (Hardware::TICI()) {
     toggles.append(new ParamControl("EnableWideCamera",
                                     "Enable use of Wide Angle Camera",
